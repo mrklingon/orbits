@@ -191,6 +191,7 @@ Kship = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     `, SpriteKind.Enemy)
+game.splash("Orbits:", "Navigate the Enterprise to avoid the Klingon. A button fires torpedos.")
 Kship.setPosition(0, 0)
 Ship.setVelocity(50, 19)
 Kship.follow(Ship, 23)
