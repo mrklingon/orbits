@@ -1,3 +1,37 @@
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    torp = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . 2 . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . 2 . . . . . . 
+        . . . . . . 7 . . . . . . . . . 
+        . . . . . . . 5 5 . 7 . . . . . 
+        . . . . 2 . . 5 2 . . . . . . . 
+        . . . . . . 7 . 5 . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . 2 . . . . . 
+        . . . . 2 . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.Projectile)
+    torp.setPosition(Ship.x, Ship.y)
+    torp.follow(Kship)
+})
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
+    sprite.destroy()
+    info.changeScoreBy(1)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    info.changeLifeBy(-1)
+    Kship.setPosition(0, 0)
+})
+let torp: Sprite = null
+let Kship: Sprite = null
+let Ship: Sprite = null
+info.setLife(5)
 scene.setBackgroundImage(img`
     ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
     ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
@@ -120,7 +154,7 @@ scene.setBackgroundImage(img`
     ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
     ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
     `)
-let Ship = sprites.create(img`
+Ship = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
@@ -139,7 +173,7 @@ let Ship = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     `, SpriteKind.Player)
 Ship.setBounceOnWall(true)
-let Kship = sprites.create(img`
+Kship = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . 7 7 . . . . . . 
@@ -156,7 +190,8 @@ let Kship = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
-    `, SpriteKind.Player)
+    `, SpriteKind.Enemy)
 Kship.setPosition(0, 0)
 Ship.setVelocity(50, 19)
 Kship.follow(Ship, 23)
+controller.moveSprite(Ship)
