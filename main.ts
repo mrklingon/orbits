@@ -1,3 +1,6 @@
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    Ship.setPosition(randint(10, 150), randint(10, 110))
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     torp = sprites.create(img`
         . . . . . . . . . . . . . . . . 
