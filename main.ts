@@ -20,20 +20,46 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         `, SpriteKind.Projectile)
+    music.pewPew.play()
     torp.setPosition(Ship.x, Ship.y)
     torp.follow(Kship)
 })
+function mkKlingon () {
+    Kship = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . 7 7 . . . . . . 
+        . . 7 7 7 7 7 7 7 7 7 7 . . . . 
+        . . 7 7 . . . . . . . 7 7 7 2 . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.Enemy)
+    Kship.follow(Ship, 23)
+    Kship.setPosition(randint(10, 150), randint(10, 110))
+}
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprite.destroy()
+    torp.destroy()
+    otherSprite.destroy()
     info.changeScoreBy(1)
-    Kship.setPosition(0, 0)
+    mkKlingon()
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
-    Kship.setPosition(0, 0)
+    Kship.destroy()
+    mkKlingon()
 })
-let torp: Sprite = null
 let Kship: Sprite = null
+let torp: Sprite = null
 let Ship: Sprite = null
 info.setLife(5)
 scene.setBackgroundImage(img`
@@ -177,26 +203,7 @@ Ship = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     `, SpriteKind.Player)
 Ship.setBounceOnWall(true)
-Kship = sprites.create(img`
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . 7 7 . . . . . . 
-    . . 7 7 7 7 7 7 7 7 7 7 . . . . 
-    . . 7 7 . . . . . . . 7 7 7 2 . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    `, SpriteKind.Enemy)
 game.splash("Orbits:", "Navigate the Enterprise to avoid the Klingon. A button fires torpedos.")
-Kship.setPosition(0, 0)
 Ship.setVelocity(50, 19)
-Kship.follow(Ship, 23)
 controller.moveSprite(Ship)
+mkKlingon()
